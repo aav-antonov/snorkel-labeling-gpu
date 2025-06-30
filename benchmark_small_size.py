@@ -107,10 +107,11 @@ if __name__ == "__main__":
     # Sort for pretty output (optional)
     rows = sorted(rows, key=lambda x: (x['customer_n'], x['lf_n'], x['features_n'], x['Method']))
 
-    # Print Markdown table header
-    print("| Method | customer_n | lf_n | features_n | execution_time(s) |")
-    print("|--------|------------|------|------------|-------------------|")
+    # Write Markdown table to file
+    with open("results.md", "w") as f:
+        f.write("| Method | customer_n | lf_n | features_n | execution_time(s) |\n")
+        f.write("|--------|------------|------|------------|-------------------|\n")
+        for row in rows:
+            f.write(f"| {row['Method']} | {row['customer_n']} | {row['lf_n']} | {row['features_n']} | {row['execution_time(s)']:.5f} |\n")
 
-    # Print each row
-    for row in rows:
-        print(f"| {row['Method']} | {row['customer_n']} | {row['lf_n']} | {row['features_n']} | {row['execution_time(s)']:.5f} |")
+    print("Results saved to results.md")
