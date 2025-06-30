@@ -60,6 +60,7 @@ def compile_cuda_lib(source_code_cu: str) -> List[str]:
     # Step 3: Parse function names
     functions = []
     for line in result.stdout.splitlines():
+        print("line: ", line)
         if line.strip().startswith("function:"):
             # Extract everything after "function:"
             func_name = line.split(":", 1)[1].strip()
@@ -270,7 +271,7 @@ class ComputeLabelingFunctionsCuda:
 
         self.module_dir = os.path.dirname(os.path.abspath(__file__))
         souce_code_cu = os.path.join(self.module_dir, souce_code_cu)
-        #print(souce_code_cu)
+        print(souce_code_cu)
 
         kernel_dict = {
             "comp_v0_label_customers": None,
