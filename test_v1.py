@@ -71,8 +71,7 @@ if __name__ == "__main__":
                 # Check results_cpu is identical to results_snorkel
                 assert np.array_equal(results_cpu, results_snorkel), "Arrays are not equal!"
                 
-                exit()
-
+                
                 # Init PyCuda ComputeClass
                 CLFCuda = ComputeLabelingFunctionsCuda(GLF.lf_json, GLF.df, column_id='id')
                 CLFCuda.get_cuda_lib("cuda_code/comp.cu")
