@@ -58,16 +58,22 @@ def compile_cuda_lib(source_code_cu: str) -> List[str]:
         return []
 
     # Step 3: Parse function names
-    functions = []
-    for line in result.stdout.splitlines():
-        print(line)
+    #functions = []
+    #for line in result.stdout.splitlines():
+    #    print(line)
         
         #if line.strip().startswith(".nv.info.")
         
-        if line.strip().startswith("function:"):
+    #    if line.strip().startswith("function:"):
             # Extract everything after "function:"
-            func_name = line.split(":", 1)[1].strip()
-            functions.append(func_name)
+    #        func_name = line.split(":", 1)[1].strip()
+    #        functions.append(func_name)
+    functions = []
+    for line in result.stdout.splitlines():
+        if "CUDA_INFO" in line:
+            match = re.search(r'\.nv\.info\.([^\s]+)', line)
+            if match:
+                functions.append(match.group(1))
 
     return functions
 
