@@ -66,6 +66,7 @@ if __name__ == "__main__":
 
                 # GPU timing
                 CLFCuda = ComputeLabelingFunctionsCuda(GLF.lf_json, GLF.df, column_id='id')
+                CLFCuda.get_cuda_lib("cuda_code/comp.cu")
 
                 # v0
                 start_time = time.perf_counter()
