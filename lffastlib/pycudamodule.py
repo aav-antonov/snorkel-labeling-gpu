@@ -281,7 +281,7 @@ class ComputeLabelingFunctionsCuda:
 
         self.module_dir = os.path.dirname(os.path.abspath(__file__))
         souce_code_cu = os.path.join(self.module_dir, souce_code_cu)
-        print(souce_code_cu)
+        #print(souce_code_cu)
 
         kernel_dict = {
             "comp_v0_label_customers": None,
@@ -294,7 +294,7 @@ class ComputeLabelingFunctionsCuda:
         new_souce_code_cu = modify_cuda_code_on_the_fly(souce_code_cu, kernel_dict, metka="fly")
 
         kernels = compile_cuda_lib(new_souce_code_cu)
-        print(kernels)
+        #print(kernels)
 
         # Load the compiled cubin
         with open(f"{new_souce_code_cu}.cubin", 'rb') as f:

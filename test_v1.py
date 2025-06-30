@@ -93,3 +93,6 @@ if __name__ == "__main__":
 
                 # Check results_gpu_v2 is identical to results_snorkel
                 assert np.array_equal(results_gpu_v2, results_snorkel), "Arrays are not equal!"
+
+    
+    print("All tests passed successfully!")
