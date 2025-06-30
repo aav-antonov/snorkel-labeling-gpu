@@ -18,6 +18,8 @@ if __name__ == "__main__":
     lf_number = [100, 200]
     features_number = [100]
     lf_size_range = [10, 10]
+    
+    lf_features_shape_max = lf_size_range[1];
 
     execution_time_data = {}
     execution_time_data["SnorkelLF"] = []
@@ -85,7 +87,7 @@ if __name__ == "__main__":
 
                 # v2
                 start_time = time.perf_counter()
-                results_gpu_v2 = CLFCuda.compute(kernel="v2", block_size=32)
+                results_gpu_v2 = CLFCuda.compute(kernel="v2", block_size=32, lf_features_shape_max = lf_features_shape_max)
                 end_time = time.perf_counter()
                 execution_time_v2 = end_time - start_time
                 print(f"GPU v2: {execution_time_v2:.3f}s")
