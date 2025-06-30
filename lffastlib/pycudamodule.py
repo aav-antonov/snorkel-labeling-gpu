@@ -29,7 +29,7 @@ def compile_cuda_lib(source_code_cu: str) -> List[str]:
     compile_cmd = [
         "nvcc", "-cubin", source_code_cu,
         "-o", f"{source_code_cu}.cubin",
-        "-arch=sm_75", "--generate-code", "arch=compute_75,code=sm_75"
+        "-arch=sm_60", "--generate-code", "arch=compute_60,code=sm_60"
     ]
 
     try:
