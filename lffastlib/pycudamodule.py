@@ -283,7 +283,7 @@ class ComputeLabelingFunctionsCuda:
         new_souce_code_cu = modify_cuda_code_on_the_fly(souce_code_cu, kernel_dict, metka="fly")
 
         kernels = compile_cuda_lib(new_souce_code_cu)
-        #print(kernels)
+        print(kernels)
 
         # Load the compiled cubin
         with open(f"{new_souce_code_cu}.cubin", 'rb') as f:
@@ -295,9 +295,10 @@ class ComputeLabelingFunctionsCuda:
         kernel_functions = {}
         for name, param in kernel_dict.items():
 
-
+                
             if param is None:
                 for f in kernels:
+                    print("name_f:", name , f)
                     if name in f:
                         kernel_functions[name] = mod.get_function(f)
                         break
