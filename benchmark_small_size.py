@@ -108,15 +108,23 @@ if __name__ == "__main__":
                 'features_n': entry[2],
                 'execution_time(s)': entry[3]
             })
-
+    
     # Sort for pretty output (optional)
     rows = sorted(rows, key=lambda x: (x['customer_n'], x['lf_n'], x['features_n'], x['Method']))
-
-    # Write Markdown table to file
-    with open("results.md", "w") as f:
+    
+    # Convert to DataFrame
+    df = pd.DataFrame(rows)
+    
+    # Display as table in the notebook cell output
+    from IPython.display import display
+    
+    display(df)
+    
+    # (Optional) Also save as markdown, as before
+    with open("results_small_scale.md", "w") as f:
         f.write("| Method | customer_n | lf_n | features_n | execution_time(s) |\n")
         f.write("|--------|------------|------|------------|-------------------|\n")
         for row in rows:
             f.write(f"| {row['Method']} | {row['customer_n']} | {row['lf_n']} | {row['features_n']} | {row['execution_time(s)']:.5f} |\n")
-
-    print("Results saved to results.md")
+    
+    print("Results saved to results_small_scale.md")
