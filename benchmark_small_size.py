@@ -118,7 +118,13 @@ if __name__ == "__main__":
     # Display as table in the notebook cell output
     from IPython.display import display
     
+    # Display ALL rows and columns
+    pd.set_option('display.max_rows', None)
+    pd.set_option('display.max_columns', None)
+
+    # show the entire DataFrame
     display(df)
+    
     
     # (Optional) Also save as markdown, as before
     with open("results_small_scale.md", "w") as f:
