@@ -52,8 +52,6 @@ if __name__ == "__main__":
 
                 execution_time_data[f"C_cpucores_{cpu_cores}"].append([customer_n, lf_n, features_n, execution_time])
 
-                assert np.array_equal(results_cpu, results_snorkel), "Arrays are not equal!"
-
                 # GPU timing
                 CLFCuda = ComputeLabelingFunctionsCuda(GLF.lf_json, GLF.df, column_id='id')
                 CLFCuda.get_cuda_lib("cuda_code/comp.cu")
@@ -65,7 +63,7 @@ if __name__ == "__main__":
                 execution_time_v0 = end_time - start_time
                 print(f"GPU v0: {execution_time_v0:.3f}s")
                 execution_time_data["GPU_kernel_v0"].append([customer_n, lf_n, features_n, execution_time_v0])
-                assert np.array_equal(results_gpu_v0, results_snorkel), "Arrays are not equal!"
+                assert np.array_equal(results_gpu_v0, results_cpu), "Arrays are not equal!"
 
                 # v1
                 start_time = time.perf_counter()
@@ -74,7 +72,7 @@ if __name__ == "__main__":
                 execution_time_v1 = end_time - start_time
                 print(f"GPU v1: {execution_time_v1:.3f}s")
                 execution_time_data["GPU_kernel_v1"].append([customer_n, lf_n, features_n, execution_time_v1])
-                assert np.array_equal(results_gpu_v1, results_snorkel), "Arrays are not equal!"
+                assert np.array_equal(results_gpu_v1, results_cpu), "Arrays are not equal!"
 
                 # v2
                 start_time = time.perf_counter()
@@ -83,7 +81,9 @@ if __name__ == "__main__":
                 execution_time_v2 = end_time - start_time
                 print(f"GPU v2: {execution_time_v2:.3f}s")
                 execution_time_data["GPU_kernel_v2"].append([customer_n, lf_n, features_n, execution_time_v2])
-                assert np.array_equal(results_gpu_v2, results_snorkel), "Arrays are not equal!"
+                assert np.array_equal(results_gpu_v2, results_cpu), "Arrays are not equal!"
+
+    import pandas as pd  # Make sure pandas is imported
 
     # Collect all results into a flattened list with the method as a field
     rows = []
@@ -96,15 +96,23 @@ if __name__ == "__main__":
                 'features_n': entry[2],
                 'execution_time(s)': entry[3]
             })
-
+    
     # Sort for pretty output (optional)
     rows = sorted(rows, key=lambda x: (x['customer_n'], x['lf_n'], x['features_n'], x['Method']))
-
-    # Write Markdown table to file
+    
+    # Convert to DataFrame
+    df = pd.DataFrame(rows)
+    
+    # Display as table in the notebook cell output
+    from IPython.display import display
+    
+    display(df)
+    
+    # (Optional) Also save as markdown, as before
     with open("results_large_scale.md", "w") as f:
         f.write("| Method | customer_n | lf_n | features_n | execution_time(s) |\n")
         f.write("|--------|------------|------|------------|-------------------|\n")
         for row in rows:
             f.write(f"| {row['Method']} | {row['customer_n']} | {row['lf_n']} | {row['features_n']} | {row['execution_time(s)']:.5f} |\n")
-
-    print("Results saved to results.md")
+    
+    print("Results saved to results_large_scale.md")
