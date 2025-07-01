@@ -14,8 +14,8 @@ if __name__ == "__main__":
     cpu_cores = os.cpu_count()  # Returns total logical CPU cores
     print(f"Available CPU cores: {cpu_cores}")
 
-    customer_number = [100]
-    lf_number = [100, 200]
+    customer_number = [100, 200, 500, 1000]
+    lf_number = [100, 200, 500, 1000]
     features_number = [100]
     lf_size_range = [10, 10]
     
@@ -95,6 +95,8 @@ if __name__ == "__main__":
                 execution_time_data["GPU_kernel_v2"].append([customer_n, lf_n, features_n, execution_time_v2])
                 assert np.array_equal(results_gpu_v2, results_snorkel), "Arrays are not equal!"
 
+    print("All test passed!!!")
+    
     # Collect all results into a flattened list with the method as a field
     rows = []
     for method, entries in execution_time_data.items():
