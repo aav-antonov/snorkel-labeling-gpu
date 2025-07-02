@@ -14,9 +14,9 @@ typedef struct {
     int *lf_features_shape;
     int *lf_features;
     int *lf_features_compare;
-    double *lf_features_thresholds;
+    float *lf_features_thresholds;
     
-    double *customers_features;
+    float *customers_features;
     int features_number;
     int customer_number;
     
@@ -33,7 +33,7 @@ void* label_customers(void* arg) {
 
         if (tid < data->customer_number) {
 
-            double *customers_features_tid = &data->customers_features[data->features_number * tid];
+            float *customers_features_tid = &data->customers_features[data->features_number * tid];
             int *results_tid = &data->results[2 * tid];
 
             if (tid == TID) {
@@ -48,7 +48,7 @@ void* label_customers(void* arg) {
                 int rule_ok = 1;
                 for (int f = feature_start; f < feature_start + data->lf_features_shape[i]; f++) {
                     int f_id = data->lf_features[f];
-                    double threshold = data->lf_features_thresholds[f];
+                    float threshold = data->lf_features_thresholds[f];
                     int compare = data->lf_features_compare[f];
                    
                     if (compare == 1) {
@@ -89,9 +89,9 @@ int *lf_outcome,
 int *lf_features_shape,
 int *lf_features,
 int *lf_features_compare,
-double  *lf_features_thresholds,
+float  *lf_features_thresholds,
 
-double  *customers_features,
+float  *customers_features,
 int features_number,
 int customer_number,
     
