@@ -50,10 +50,10 @@ class ComputeLabelingFunctions:
         self.lf_features_shape_ctypes = self.LF.lf_features_shape.astype(np.int32).ctypes.data_as(ctypes.POINTER(ctypes.c_int))# 
         self.lf_features_ctypes = self.LF.lf_features.astype(np.int32).ctypes.data_as(ctypes.POINTER(ctypes.c_int))
         self.lf_features_compare_ctypes = self.LF.lf_features_compare.astype(np.int32).ctypes.data_as(ctypes.POINTER(ctypes.c_int))
-        self.lf_features_thresholds_ctypes = np.ascontiguousarray(self.LF.lf_features_thresholds).ctypes.data_as(ctypes.POINTER(ctypes.c_double))
+        self.lf_features_thresholds_ctypes = np.ascontiguousarray(self.LF.lf_features_thresholds).ctypes.data_as(ctypes.POINTER(ctypes.c_float))
         self.lf_outcome_ctypes = self.LF.lf_outcome.astype(np.int32).ctypes.data_as(ctypes.POINTER(ctypes.c_int))
                 
-        self.customers_features_ctypes = np.ascontiguousarray(self.CF.customers_features.flatten()).ctypes.data_as(ctypes.POINTER(ctypes.c_double))
+        self.customers_features_ctypes = np.ascontiguousarray(self.CF.customers_features.flatten()).ctypes.data_as(ctypes.POINTER(ctypes.c_float))
 
 
     def compute(self, threads = 8):
