@@ -37,9 +37,9 @@ if __name__ == "__main__":
     print(f"Available CPU cores: {cpu_cores}")
 
     ## Generate random case )
-    customer_number = [1, 10, 100]
-    features_number = [50, 100]
-    lf_number = [1, 10, 100]
+    customer_number = [1, 10, 100, 1000]
+    features_number = [100]
+    lf_number = [1,  1000]
     lf_size_range = [5, 50]
 
     # max number of features in lf, used only for cuda kernel="v2";
