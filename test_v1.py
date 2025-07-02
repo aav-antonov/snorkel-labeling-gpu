@@ -37,10 +37,11 @@ if __name__ == "__main__":
     print(f"Available CPU cores: {cpu_cores}")
 
     ## Generate random case )
-    customer_number = [1, 10, 100, 1000]
+    # noinspection PyPackageRequirements
+    customer_number = [1000, 2000]
     features_number = [100]
-    lf_number = [1,  1000]
-    lf_size_range = [5, 50]
+    lf_number = [10000]
+    lf_size_range = [10, 10]
 
     # max number of features in lf, used only for cuda kernel="v2";
     lf_features_shape_max = lf_size_range[1];

@@ -5,6 +5,7 @@ from typing import List
 import numpy as np
 import pycuda.autoinit
 import pycuda.driver as cuda
+
 from pycuda.compiler import SourceModule
 from pycuda import gpuarray
 
@@ -15,7 +16,7 @@ from lffastlib.pycutils import CustomerFeatures
 
 
 
-def compile_cuda_lib(source_code_cu: str) -> List[str]:
+def compile_cuda_lib(source_code_cu: str, arch="60") -> List[str]:
     """
     Compiles CUDA code to cubin and extracts the list of compiled functions.
 
@@ -25,12 +26,11 @@ def compile_cuda_lib(source_code_cu: str) -> List[str]:
     Returns:
         List of compiled function names
     """
-
-    # Step 1: Compile to cubin
+    # Step 1: Compile to cubin with specified architecture
     compile_cmd = [
         "nvcc", "-cubin", source_code_cu,
         "-o", f"{source_code_cu}.cubin",
-        "-arch=sm_60", "--generate-code", "arch=compute_60,code=sm_60"
+        f"-arch=sm_{arch}",  "--generate-code", f"arch=compute_{arch},code=sm_{arch}"
     ]
 
     try:
@@ -59,19 +59,11 @@ def compile_cuda_lib(source_code_cu: str) -> List[str]:
         return []
 
     # Step 3: Parse function names
-    #functions = []
-    #for line in result.stdout.splitlines():
-    #    print(line)
-        
-        #if line.strip().startswith(".nv.info.")
-        
-    #    if line.strip().startswith("function:"):
-            # Extract everything after "function:"
-    #        func_name = line.split(":", 1)[1].strip()
-    #        functions.append(func_name)
     functions = []
     for line in result.stdout.splitlines():
+
         if "CUDA_INFO" in line:
+            #print(line)
             match = re.search(r'\.nv\.info\.([^\s]+)', line)
             if match:
                 functions.append(match.group(1))
@@ -291,10 +283,18 @@ class ComputeLabelingFunctionsCuda:
         }
 
 
+
+
         new_souce_code_cu = modify_cuda_code_on_the_fly(souce_code_cu, kernel_dict, metka="fly")
 
-        kernels = compile_cuda_lib(new_souce_code_cu)
-        #print(kernels)
+
+        # Get the compute capability of your GPU
+        dev = pycuda.autoinit.device
+        compute_capability = dev.compute_capability()
+        arch_flag = f"{compute_capability[0]}{compute_capability[1]}"
+
+        kernels = compile_cuda_lib(new_souce_code_cu, arch = arch_flag)
+
 
         # Load the compiled cubin
         with open(f"{new_souce_code_cu}.cubin", 'rb') as f:
@@ -306,16 +306,15 @@ class ComputeLabelingFunctionsCuda:
         kernel_functions = {}
         for name, param in kernel_dict.items():
 
-                
             if param is None:
                 for f in kernels:
-                    print("name_f:", name , f)
                     if name in f:
                         kernel_functions[name] = mod.get_function(f)
                         break
             else:
                 kernel_functions[name] = {}
                 for f in kernels:
+
                     if name in f:
                         if str(param) in f:
                             print(f, name, param)

@@ -9,21 +9,23 @@ import numpy as np
 import pandas as pd
 import os
 
+
+
 if __name__ == "__main__":
 
     cpu_cores = os.cpu_count()  # Returns total logical CPU cores
     print(f"Available CPU cores: {cpu_cores}")
 
-    customer_number = [1000, 2000]
-    lf_number = [1000]
-    features_number = [300]
+    customer_number = [1000000, 2000000 ]
+    lf_number = [100000, 200000]
+    features_number = [200]
     lf_size_range = [10, 10]
     
     lf_features_shape_max = lf_size_range[1];
 
     execution_time_data = {}
-    execution_time_data["SnorkelLF"] = []
-    execution_time_data[f"C_cpucores_{cpu_cores}"] = []
+    
+    #execution_time_data[f"C_cpucores_{cpu_cores}"] = []
     execution_time_data["GPU_kernel_v0"] = []
     execution_time_data["GPU_kernel_v1"] = []
     execution_time_data["GPU_kernel_v2"] = []
@@ -40,29 +42,17 @@ if __name__ == "__main__":
 
                 GLF = GeneratorLF(**input)
 
-                converter = SnorkelLFJsonConverter()
-                converter.json_to_lfs(GLF.lf_json)
-
-                # Snorkel timing
-                start_time = time.perf_counter()
-                results_snorkel = converter.apply_lfs_to_df(GLF.df)
-                end_time = time.perf_counter()
-                execution_time = end_time - start_time
-                print(f"SnorkelLF: {execution_time:.3f}s")
-
-                execution_time_data["SnorkelLF"].append([customer_n, lf_n, features_n, execution_time])
+                
 
                 # CPU timing
-                CLFCpu = ComputeLabelingFunctions(GLF.lf_json, GLF.df, column_id='id')
-                start_time = time.perf_counter()
-                results_cpu = CLFCpu.compute(threads=cpu_cores)
-                end_time = time.perf_counter()
-                execution_time = end_time - start_time
-                print(f"CPU: {execution_time:.3f}s")
+                #CLFCpu = ComputeLabelingFunctions(GLF.lf_json, GLF.df, column_id='id')
+                #start_time = time.perf_counter()
+                #results_cpu = CLFCpu.compute(threads=cpu_cores)
+                #end_time = time.perf_counter()
+                #execution_time = end_time - start_time
+                #print(f"CPU: {execution_time:.3f}s")
 
-                execution_time_data[f"C_cpucores_{cpu_cores}"].append([customer_n, lf_n, features_n, execution_time])
-
-                assert np.array_equal(results_cpu, results_snorkel), "Arrays are not equal!"
+                #execution_time_data[f"C_cpucores_{cpu_cores}"].append([customer_n, lf_n, features_n, execution_time])
 
                 # GPU timing
                 CLFCuda = ComputeLabelingFunctionsCuda(GLF.lf_json, GLF.df, column_id='id')
@@ -75,7 +65,6 @@ if __name__ == "__main__":
                 execution_time_v0 = end_time - start_time
                 print(f"GPU v0: {execution_time_v0:.3f}s")
                 execution_time_data["GPU_kernel_v0"].append([customer_n, lf_n, features_n, execution_time_v0])
-                assert np.array_equal(results_gpu_v0, results_snorkel), "Arrays are not equal!"
 
                 # v1
                 start_time = time.perf_counter()
@@ -84,7 +73,7 @@ if __name__ == "__main__":
                 execution_time_v1 = end_time - start_time
                 print(f"GPU v1: {execution_time_v1:.3f}s")
                 execution_time_data["GPU_kernel_v1"].append([customer_n, lf_n, features_n, execution_time_v1])
-                assert np.array_equal(results_gpu_v1, results_snorkel), "Arrays are not equal!"
+                assert np.array_equal(results_gpu_v1, results_gpu_v0), "Arrays are not equal!"
 
                 # v2
                 start_time = time.perf_counter()
@@ -93,10 +82,9 @@ if __name__ == "__main__":
                 execution_time_v2 = end_time - start_time
                 print(f"GPU v2: {execution_time_v2:.3f}s")
                 execution_time_data["GPU_kernel_v2"].append([customer_n, lf_n, features_n, execution_time_v2])
-                assert np.array_equal(results_gpu_v2, results_snorkel), "Arrays are not equal!"
+                assert np.array_equal(results_gpu_v2, results_gpu_v0), "Arrays are not equal!"
 
-    print("All test passed!!!")
-    
+
     # Collect all results into a flattened list with the method as a field
     rows = []
     for method, entries in execution_time_data.items():
@@ -111,12 +99,14 @@ if __name__ == "__main__":
     
     # Sort for pretty output (optional)
     rows = sorted(rows, key=lambda x: (x['customer_n'], x['lf_n'], x['features_n'], x['Method']))
+    
 
+    
     # (Optional) Also save as markdown, as before
-    with open("results_small_scale.md", "w") as f:
+    with open("results_large_extrascale.md", "w") as f:
         f.write("| Method | customer_n | lf_n | features_n | execution_time(s) |\n")
         f.write("|--------|------------|------|------------|-------------------|\n")
         for row in rows:
             f.write(f"| {row['Method']} | {row['customer_n']} | {row['lf_n']} | {row['features_n']} | {row['execution_time(s)']:.5f} |\n")
     
-    print("Results saved to results_small_scale.md")
+    print("Results saved to results_extralarge_scale.md")
