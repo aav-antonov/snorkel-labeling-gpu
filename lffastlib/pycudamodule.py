@@ -282,11 +282,7 @@ class ComputeLabelingFunctionsCuda:
             "reshape_lf_features_kernel": None
         }
 
-
-
-
         new_souce_code_cu = modify_cuda_code_on_the_fly(souce_code_cu, kernel_dict, metka="fly")
-
 
         # Get the compute capability of your GPU
         dev = pycuda.autoinit.device
@@ -294,7 +290,6 @@ class ComputeLabelingFunctionsCuda:
         arch_flag = f"{compute_capability[0]}{compute_capability[1]}"
 
         kernels = compile_cuda_lib(new_souce_code_cu, arch = arch_flag)
-
 
         # Load the compiled cubin
         with open(f"{new_souce_code_cu}.cubin", 'rb') as f:
@@ -317,7 +312,6 @@ class ComputeLabelingFunctionsCuda:
 
                     if name in f:
                         if str(param) in f:
-                            print(f, name, param)
                             kernel_functions[name][param] = mod.get_function(f)
 
 
