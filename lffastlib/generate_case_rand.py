@@ -43,7 +43,7 @@ class GeneratorLF:
             DataFrame with customer features (rows: customers, columns: features)
         """
         # Generate random values between 0 and 100
-        features = np.random.rand(self.customer_number, self.features_number) * 100
+        features = (np.random.rand(self.customer_number, self.features_number) * 100).astype(np.float32)
 
         # Create column names (f0, f1, ...)
         columns = [f"f{i}" for i in range(self.features_number)]
@@ -75,7 +75,8 @@ class GeneratorLF:
 
             feature_lf_i = [f"f{i}" for i in feature_lf_i]
             # Generate random thresholds (0-100) for each feature
-            threshold_lf_i = [random.uniform(0, 100) for _ in range(lf_size)]
+            #threshold_lf_i = [random.uniform(0, 100) for _ in range(lf_size)]
+            threshold_lf_i = np.array([random.uniform(0, 100) for _ in range(lf_size)], dtype=np.float32)
 
             # Randomly assign signs (1 or -1) for each feature
             sign_lf_i = [random.choice(["<=", ">"]) for _ in range(lf_size)]

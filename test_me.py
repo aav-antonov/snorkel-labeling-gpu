@@ -38,9 +38,9 @@ if __name__ == "__main__":
 
     ## Generate random case )
     # noinspection PyPackageRequirements
-    customer_number = [1000, 2000]
+    customer_number = [1, 10, 100, 1000]
     features_number = [100]
-    lf_number = [10000]
+    lf_number = [1, 10, 100,1000]
     lf_size_range = [10, 10]
 
     # max number of features in lf, used only for cuda kernel="v2";

@@ -42,17 +42,6 @@ if __name__ == "__main__":
 
                 GLF = GeneratorLF(**input)
 
-                
-
-                # CPU timing
-                #CLFCpu = ComputeLabelingFunctions(GLF.lf_json, GLF.df, column_id='id')
-                #start_time = time.perf_counter()
-                #results_cpu = CLFCpu.compute(threads=cpu_cores)
-                #end_time = time.perf_counter()
-                #execution_time = end_time - start_time
-                #print(f"CPU: {execution_time:.3f}s")
-
-                #execution_time_data[f"C_cpucores_{cpu_cores}"].append([customer_n, lf_n, features_n, execution_time])
 
                 # GPU timing
                 CLFCuda = ComputeLabelingFunctionsCuda(GLF.lf_json, GLF.df, column_id='id')

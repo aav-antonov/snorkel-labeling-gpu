@@ -1,3 +1,28 @@
+"""
+This script is a comprehensive perfomance test for comparing:
+1. Native Snorkel implementation (Python)
+2. C multithreading implementation
+3. Three different CUDA GPU implementations (v0, v1, v2 kernels)
+
+The test:
+- Generates random test cases with varying parameters:
+  - Number of customers
+  - Number of features
+  - Number of labeling functions
+  - Size range of labeling functions
+- For each test case:
+  - Computes results using all implementations
+  - Validates that all implementations produce identical results
+  - Uses assertions to verify result equality
+
+The purpose is to ensure:
+1. All implementations are functionally equivalent
+2. The CUDA kernels produce correct results matching the reference Snorkel implementation
+3. The code works across different input sizes and configurations
+
+see results in file: results_small_scale.md
+"""
+
 import time
 
 from lffastlib.pycmodule import ComputeLabelingFunctions
@@ -14,19 +39,22 @@ if __name__ == "__main__":
     cpu_cores = os.cpu_count()  # Returns total logical CPU cores
     print(f"Available CPU cores: {cpu_cores}")
 
+    # test configuration
     customer_number = [1000, 2000]
-    lf_number = [1000]
+    lf_number = [1000, 2000]
     features_number = [300]
     lf_size_range = [10, 10]
     
-    lf_features_shape_max = lf_size_range[1];
 
+    # collecting resuts in execution_time_data = {}
     execution_time_data = {}
     execution_time_data["SnorkelLF"] = []
     execution_time_data[f"C_cpucores_{cpu_cores}"] = []
     execution_time_data["GPU_kernel_v0"] = []
     execution_time_data["GPU_kernel_v1"] = []
     execution_time_data["GPU_kernel_v2"] = []
+
+    lf_features_shape_max = lf_size_range[1];
 
     for customer_n in customer_number:
         for features_n in features_number:
