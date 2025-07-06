@@ -4,7 +4,8 @@ This repository aims to provide significantly faster implementations for computi
 
 The C code is integrated with Python using ctypes, and the CUDA code is integrated using PyCUDA.
 
-You can learn more about programmatic labeling and Snorkel by visiting the [Snorkel website](https://www.snorkel.org/).
+You can learn more about programmatic labeling and Snorkel 
+by visiting the [Snorkel website](https://docs.snorkel.ai/docs/25.1/user-guide/intro/welcome-to-snorkel-flow).
 
 
 ## Targeted Labeling Function Types
