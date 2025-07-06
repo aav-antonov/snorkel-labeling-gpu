@@ -1,6 +1,11 @@
-# Labeling Functions Implementation Benchmark
+# High-Performance Labeling Functions with C and CUDA 
 
-This repository contains a comprehensive benchmark for comparing different implementations of Labeling Functions (LFs) computation, including Python, C multithreading, and multiple CUDA GPU implementations.
+This repository aims to provide significantly faster implementations for computing specific types of labeling functions, compared to Snorkel's native Python implementations. This speedup is achieved through the use of C multithreading and multiple CUDA GPU implementations.
+
+The C code is integrated with Python using ctypes, and the CUDA code is integrated using PyCUDA.
+
+You can learn more about programmatic labeling and Snorkel by visiting the [Snorkel website](https://www.snorkel.org/).
+
 
 ## Targeted Labeling Function Types
 
@@ -24,7 +29,7 @@ def complex_lf(x):
         x.features[29] > 0.7 and 
         x.features[333] <= 0.9):
         return 1
-    return 0
+    return -1
 ```
 
 ## Implementations
@@ -36,7 +41,7 @@ The project compares five different implementations:
 4. **CUDA GPU v1 kernel** (Optimized GPU implementation)
 5. **CUDA GPU v2 kernel** (Further optimized GPU implementation)
 
-## Purpose
+## Purpose of benchmark
 
 The benchmark serves to:
 - Validate functional equivalence across all implementations
@@ -67,7 +72,6 @@ pip install .
 
 
 ```
-
 
 
 ## Test Run
