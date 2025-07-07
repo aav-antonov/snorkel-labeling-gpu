@@ -37,7 +37,7 @@ __global__ void reshape_lf_features_kernel(
     }
 }
 
-template<int lf_features_MAX>
+template<int features_number_MAX>
 __global__ void comp_v2_label_customers(
     int lf_number,
     int *lf_outcome,
@@ -55,7 +55,7 @@ __global__ void comp_v2_label_customers(
 
 ) {
 
-    __shared__ float shared_features[lf_features_MAX];
+    __shared__ float shared_features[features_number_MAX];
     __shared__ int shared_results[2];
 
     if (threadIdx.x == 0) {
@@ -126,7 +126,7 @@ template __global__ void comp_v2_label_customers<400>(int, int*, int*, int*, int
 
 
 
-template<int lf_features_MAX>
+template<int features_number_MAX>
 __global__ void comp_v1_label_customers(
     int lf_number,
     int *lf_outcome,
@@ -144,7 +144,7 @@ __global__ void comp_v1_label_customers(
 
 ) {
 
-    __shared__ float shared_features[lf_features_MAX];
+    __shared__ float shared_features[features_number_MAX];
     __shared__ int shared_results[2];
 
     if (threadIdx.x == 0) {
