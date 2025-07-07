@@ -1,3 +1,28 @@
+"""
+This script is a comprehensive perfomance test for comparing:
+
+1. C multithreading implementation
+2. Three different CUDA GPU implementations (v0, v1, v2 kernels)
+
+The test:
+- Generates random test cases with varying parameters:
+  - Number of customers
+  - Number of features
+  - Number of labeling functions
+  - Size range of labeling functions
+- For each test case:
+  - Computes results using all implementations
+  - Validates that all implementations produce identical results
+  - Uses assertions to verify result equality
+
+The purpose is to ensure:
+1. All implementations are functionally equivalent
+2. The CUDA kernels produce correct results matching the reference C implementation
+3. The code works across different input sizes and configurations
+
+see results in file: results_large_scale.md
+"""
+
 import time
 
 from lffastlib.pycmodule import ComputeLabelingFunctions
