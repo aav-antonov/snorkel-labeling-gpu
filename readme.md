@@ -61,6 +61,17 @@ The project compares five different implementations:
 4. **CUDA GPU v1 kernel** (Optimized GPU implementation)
 5. **CUDA GPU v2 kernel** (Further optimized GPU implementation)
 
+## CUDA Kernels
+
+### Templating on the fly
+CUDA code is modified on the fly to specify exact values of parameters for template instantiation. See module `lffastlib/modify_cuda_code_programmatically.py`. After modification, CUDA code is compiled (total time < 0.5 seconds).
+
+### Kernel optimization
+Three versions of CUDA kernel are implemented (naive, optimized 1, and optimized 2), primarily optimizing memory access patterns:
+- Coalesced memory access
+- Usage of shared memory
+
+
 ## Purpose of benchmark
 
 The benchmark serves to:
@@ -129,12 +140,22 @@ Each benchmark script will automatically generate its corresponding results file
 
     results_extralarge_scale.md
 
+### Results
 
-## Expected results_small_scale
+Below results of test runs are provided. Main conclusions:
+
+   - CPU implementation (12 cores) accelerates ~500 times native python snorkel imlementation
+   - GPU (best kernel) accelerates further ~40 * 500 = 20,000 times
+
+Test were run on 2 relatively olf GPUs (Tesla P100-PCIE-16GB vs GeForce RTX 2070). 
+Several kernel implementation were tested. 
+Kernel (v2) seems to be fastest on Tesla GPU while on RTX2070 no difference in perfomance between kernels v1 and v2 was observed.
+
+### Expected results_small_scale
 
 Hardware:
-CPU: AMD Ryzen 5 3600 6-Core Processor
-GPU: NVIDIA GeForce RTX 2070
+   - CPU: AMD Ryzen 5 3600 6-Core Processor
+   - GPU: NVIDIA GeForce RTX 2070
 
 | Method | customer_n | lf_n | features_n | execution_time(s) |
 |--------|------------|------|------------|-------------------|
@@ -149,11 +170,11 @@ GPU: NVIDIA GeForce RTX 2070
 | GPU_kernel_v2 | 2000 | 1000 | 300 | 0.00052 |
 | SnorkelLF | 2000 | 1000 | 300 | 33.15996 |
 
-## Expected results_large_scale
+### Expected results_large_scale
 
 Hardware:
-CPU: AMD Ryzen 5 3600 6-Core Processor
-GPU: NVIDIA GeForce RTX 2070
+   - CPU: AMD Ryzen 5 3600 6-Core Processor
+   - GPU: NVIDIA GeForce RTX 2070
 
 | Method | customer_n | lf_n | features_n | execution_time(s) |
 |--------|------------|------|------------|-------------------|
@@ -164,11 +185,11 @@ GPU: NVIDIA GeForce RTX 2070
 
 
 
-## Expected results_extralarge_scale
+### Expected results_extralarge_scale
 
 Hardware:
-CPU: AMD Ryzen 5 3600 6-Core Processor
-GPU: NVIDIA GeForce RTX 2070
+   - CPU: AMD Ryzen 5 3600 6-Core Processor
+   - GPU: NVIDIA GeForce RTX 2070
 
 | Method | customer_n | lf_n | features_n | execution_time(s) |
 |--------|------------|------|------------|-------------------|
@@ -184,5 +205,25 @@ GPU: NVIDIA GeForce RTX 2070
 | GPU_kernel_v0 | 2000000 | 200000 | 200 | 210.15120 |
 | GPU_kernel_v1 | 2000000 | 200000 | 200 | 33.15818 |
 | GPU_kernel_v2 | 2000000 | 200000 | 200 | 33.78268 |
+
+
+Hardware (Kaggle):
+   - CPU: Intel(R) Xeon(R) CPU @ 2.00GHz
+   - GPU: Tesla P100-PCIE-16GB
+
+| Method | customer_n | lf_n | features_n | execution_time(s) |
+|--------|------------|------|------------|-------------------|
+| GPU_kernel_v0 | 1000000 | 100000 | 200 | 38.84960 |
+| GPU_kernel_v1 | 1000000 | 100000 | 200 | 16.94457 |
+| GPU_kernel_v2 | 1000000 | 100000 | 200 | 9.22725 |
+| GPU_kernel_v0 | 1000000 | 200000 | 200 | 79.12643 |
+| GPU_kernel_v1 | 1000000 | 200000 | 200 | 38.86051 |
+| GPU_kernel_v2 | 1000000 | 200000 | 200 | 21.86164 |
+| GPU_kernel_v0 | 2000000 | 100000 | 200 | 78.91810 |
+| GPU_kernel_v1 | 2000000 | 100000 | 200 | 33.98729 |
+| GPU_kernel_v2 | 2000000 | 100000 | 200 | 18.50220 |
+| GPU_kernel_v0 | 2000000 | 200000 | 200 | 160.47505 |
+| GPU_kernel_v1 | 2000000 | 200000 | 200 | 80.03748 |
+| GPU_kernel_v2 | 2000000 | 200000 | 200 | 43.75942 |
 
 
