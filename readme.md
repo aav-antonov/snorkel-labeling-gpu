@@ -46,14 +46,14 @@ def complex_lf(x):
         return 1
     return -1
 
-#Type 2 (flase positive)
+#Type 2 (false positive)
 @labeling_function()
 def complex_lf(x):
     # Example with 4 conditions using different operators
-    if (x.features[0] < 0.2 and 
-        x.features[17] >= 0.5 and 
-        x.features[29] > 0.7 and 
-        x.features[333] <= 0.9):
+    if (x.features[11] < 0.5 and 
+        x.features[57] >= 0.2 and 
+        x.features[84] > 0.1 and 
+        x.features[139] <= 0.5):
         return 0
     return -1
 ```
