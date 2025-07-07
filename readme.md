@@ -8,7 +8,13 @@ The C code is integrated with Python using ctypes, and the CUDA code is integrat
 You can learn more about programmatic labeling and Snorkel 
 by visiting the [Snorkel website](https://docs.snorkel.ai/docs/25.1/user-guide/intro/welcome-to-snorkel-flow).
 
+## Installation
 
+```bash
+git clone https://github.com/aav-antonov/snorkel-labeling-gpu/
+cd snorkel-labeling-gpu
+pip install .
+```
 
 ## Targeted Labeling Function Types
 
@@ -93,18 +99,6 @@ The test framework:
    - Validates identical results across implementations
    - Uses assertions to verify result equality
 
-
-## Installation
-
-```bash
-git clone https://github.com/aav-antonov/snorkel-labeling-gpu/
-cd snorkel-labeling-gpu
-pip install .
-
-
-```
-
-
 ## Test Run
 Validation Test
 
@@ -140,14 +134,15 @@ Each benchmark script will automatically generate its corresponding results file
 
     results_extralarge_scale.md
 
+
 ### Results
 
 Below results of test runs are provided. Main conclusions:
 
    - CPU implementation (12 cores) accelerates ~500 times native python snorkel imlementation
-   - GPU (best kernel) accelerates further ~40 * 500 = 20,000 times
+   - GPU (best kernel) accelerates further ~40 * 500 ~ 20,000 times
 
-Test were run on 2 relatively olf GPUs (Tesla P100-PCIE-16GB vs GeForce RTX 2070). 
+Test were run on 2 relatively old GPUs (Tesla P100-PCIE-16GB vs GeForce RTX 2070). 
 Several kernel implementation were tested. 
 Kernel (v2) seems to be fastest on Tesla GPU while on RTX2070 no difference in perfomance between kernels v1 and v2 was observed.
 
