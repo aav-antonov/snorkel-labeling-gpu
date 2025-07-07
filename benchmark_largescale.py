@@ -41,6 +41,7 @@ if __name__ == "__main__":
     cpu_cores = os.cpu_count()  # Returns total logical CPU cores
     print(f"Available CPU cores: {cpu_cores}")
 
+    # test configuration
     customer_number = [1000000]
     lf_number = [100000]
     features_number = [400]
